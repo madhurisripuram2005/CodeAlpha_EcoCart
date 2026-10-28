@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { wishlistController } from '../controllers/wishlistController.js';
-import { requireAuth } from '../middleware/authMiddleware.js';
+import { authenticate } from '../middleware/authMiddleware.js';
 
 const router = Router();
 
 // All wishlist endpoints require authentication
-router.use(requireAuth);
+router.use(authenticate);
 
 router.get('/', wishlistController.getWishlist);
 router.post('/', wishlistController.addToWishlist);
