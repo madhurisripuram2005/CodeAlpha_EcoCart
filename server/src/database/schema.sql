@@ -21,7 +21,16 @@ CREATE TABLE IF NOT EXISTS products (
   slug TEXT UNIQUE NOT NULL,
   description TEXT NOT NULL,
   price REAL NOT NULL CHECK(price >= 0),
-  category TEXT NOT NULL CHECK(category IN ('Reusable Bottles', 'Sustainable Bags', 'Eco Stationery', 'Home Essentials')),
+  category TEXT NOT NULL CHECK(category IN (
+    'Reusable Bottles & Drinkware', 'Reusable Bottles',
+    'Sustainable Bags & Accessories', 'Sustainable Bags',
+    'Eco-Friendly Stationery', 'Eco Stationery',
+    'Home & Kitchen Essentials', 'Home Essentials',
+    'Personal Care & Reusable Products', 'Personal Care & Wellness',
+    'Sustainable Fashion',
+    'Gardening & Outdoor Products', 'Gardening & Outdoor',
+    'Travel & Lifestyle'
+  )),
   stock INTEGER NOT NULL DEFAULT 0 CHECK(stock >= 0),
   eco_score INTEGER NOT NULL CHECK(eco_score >= 0 AND eco_score <= 100),
   eco_factors TEXT NOT NULL,
@@ -74,6 +83,15 @@ CREATE TABLE IF NOT EXISTS order_items (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 6. Wishlist Items Table
+CREATE TABLE IF NOT EXISTS wishlist_items (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(user_id, product_id)
+);
+
 -- Indexes for Query Performance & Foreign Keys
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_products_category ON products(category);
@@ -84,3 +102,4 @@ CREATE INDEX IF NOT EXISTS idx_orders_user ON orders(user_id);
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
 CREATE INDEX IF NOT EXISTS idx_orders_order_number ON orders(order_number);
 CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items(order_id);
+CREATE INDEX IF NOT EXISTS idx_wishlist_user ON wishlist_items(user_id);

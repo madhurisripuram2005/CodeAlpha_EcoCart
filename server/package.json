@@ -9,6 +9,7 @@
     "dev": "node --no-warnings --experimental-sqlite --watch src/server.js",
     "init-db": "node --no-warnings --experimental-sqlite src/database/init.js",
     "seed": "node --no-warnings --experimental-sqlite src/database/seed.js",
+    "seed:120": "node --no-warnings --experimental-sqlite src/database/seed120Products.js",
     "inspect-db": "node --no-warnings --experimental-sqlite src/database/inspect.js",
     "test": "node --no-warnings --experimental-sqlite --test --test-concurrency=1 tests/*.test.js"
   },

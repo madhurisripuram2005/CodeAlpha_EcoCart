@@ -10,6 +10,7 @@
     "build": "npm --prefix client build",
     "test": "npm --prefix server test",
     "seed": "npm --prefix server run seed",
+    "seed:120": "npm --prefix server run seed:120",
     "inspect-db": "npm --prefix server run inspect-db"
   },
   "keywords": [

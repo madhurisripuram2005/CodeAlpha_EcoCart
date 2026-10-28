@@ -156,7 +156,16 @@ export const adminController = {
       if (isNaN(numPrice) || numPrice < 0) {
         return res.status(400).json({ success: false, message: 'Valid positive price is required.' });
       }
-      const allowedCategories = ['Reusable Bottles', 'Sustainable Bags', 'Eco Stationery', 'Home Essentials'];
+      const allowedCategories = [
+        'Reusable Bottles & Drinkware', 'Reusable Bottles',
+        'Sustainable Bags & Accessories', 'Sustainable Bags',
+        'Eco-Friendly Stationery', 'Eco Stationery',
+        'Home & Kitchen Essentials', 'Home Essentials',
+        'Personal Care & Reusable Products', 'Personal Care & Wellness',
+        'Sustainable Fashion',
+        'Gardening & Outdoor Products', 'Gardening & Outdoor',
+        'Travel & Lifestyle'
+      ];
       if (!allowedCategories.includes(category)) {
         return res.status(400).json({
           success: false,

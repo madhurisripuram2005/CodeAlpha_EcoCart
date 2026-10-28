@@ -46,8 +46,8 @@ export const productController = {
       }
 
       if (category && category.trim() && category !== 'All') {
-        conditions.push('category = ?');
-        params.push(category.trim());
+        conditions.push('(category = ? OR category LIKE ?)');
+        params.push(category.trim(), `${category.trim()}%`);
       }
 
       if (min_price !== undefined && min_price !== '') {
