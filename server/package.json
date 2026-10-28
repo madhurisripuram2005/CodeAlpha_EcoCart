@@ -11,7 +11,8 @@
     "seed": "node --no-warnings --experimental-sqlite src/database/seed.js",
     "seed:120": "node --no-warnings --experimental-sqlite src/database/seed120Products.js",
     "inspect-db": "node --no-warnings --experimental-sqlite src/database/inspect.js",
-    "test": "node --no-warnings --experimental-sqlite --test --test-concurrency=1 tests/*.test.js"
+    "test": "node --no-warnings --experimental-sqlite --test --test-concurrency=1 tests/*.test.js",
+    "test:e2e": "node --no-warnings --experimental-sqlite src/database/verifyE2E.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

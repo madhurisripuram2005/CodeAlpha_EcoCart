@@ -9,6 +9,7 @@
     "server:dev": "npm --prefix server dev",
     "build": "npm --prefix client build",
     "test": "npm --prefix server test",
+    "test:e2e": "npm --prefix server run test:e2e",
     "seed": "npm --prefix server run seed",
     "seed:120": "npm --prefix server run seed:120",
     "inspect-db": "npm --prefix server run inspect-db"
