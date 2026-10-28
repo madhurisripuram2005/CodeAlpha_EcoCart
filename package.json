@@ -1,0 +1,27 @@
+{
+  "name": "codealpha-ecocart",
+  "version": "1.0.0",
+  "description": "EcoCart — Smart Sustainable Shopping Platform (Full-Stack Web App for CodeAlpha Internship)",
+  "private": true,
+  "scripts": {
+    "server": "npm --prefix server start",
+    "client": "npm --prefix client dev",
+    "server:dev": "npm --prefix server dev",
+    "build": "npm --prefix client build",
+    "test": "npm --prefix server test",
+    "seed": "npm --prefix server run seed",
+    "inspect-db": "npm --prefix server run inspect-db"
+  },
+  "keywords": [
+    "ecommerce",
+    "sustainability",
+    "full-stack",
+    "react",
+    "express",
+    "sqlite",
+    "vite",
+    "codealpha"
+  ],
+  "author": "CodeAlpha Full Stack Intern",
+  "license": "MIT"
+}
