@@ -4,6 +4,7 @@ import { ShoppingBag, Trash2, ArrowRight, ArrowLeft, Plus, Minus, ShieldCheck, L
 import { useCart } from '../context/CartContext';
 import EcoScoreBadge from '../components/EcoScoreBadge';
 import ImpactSummaryCard from '../components/ImpactSummaryCard';
+import { formatINR } from '../utils/formatters';
 
 export default function CartPage() {
   const { items, summary, loading, updateQuantity, removeItem, clearCart } = useCart();
@@ -21,7 +22,7 @@ export default function CartPage() {
             You haven't added any sustainable products to your shopping cart yet.
           </p>
           <Link to="/products" className="btn btn-primary btn-lg">
-            <span>Explore Sustainable Products</span>
+            <span>Explore 140+ Sustainable Products</span>
             <ArrowRight size={18} />
           </Link>
         </div>
@@ -79,7 +80,7 @@ export default function CartPage() {
                       <div className="cart-item-score">
                         <EcoScoreBadge score={item.eco_score} size="sm" />
                       </div>
-                      <span className="cart-item-unit-price">${Number(item.price).toFixed(2)} each</span>
+                      <span className="cart-item-unit-price">{formatINR(item.price)} each</span>
                       {!item.hasSufficientStock && (
                         <span className="text-danger" style={{ fontSize: '0.75rem', fontWeight: 600 }}>
                           Only {item.stock} left in stock!
@@ -125,7 +126,7 @@ export default function CartPage() {
 
                   {/* Line Subtotal */}
                   <div className="cart-item-subtotal text-right">
-                    <strong>${Number(item.subtotal).toFixed(2)}</strong>
+                    <strong>{formatINR(item.subtotal)}</strong>
                   </div>
                 </div>
               ))}
@@ -142,7 +143,7 @@ export default function CartPage() {
 
           {/* Environmental Impact of current cart */}
           <div style={{ marginTop: '2rem' }}>
-            <ImpactSummaryCard impact={summary.impact} title="Estimated Impact of this Order" />
+            <ImpactSummaryCard impact={summary.impact} title="Estimated Environmental Impact of this Order" />
           </div>
         </div>
 
@@ -153,11 +154,11 @@ export default function CartPage() {
 
             <div className="summary-row">
               <span>Items Total ({summary.totalItems}):</span>
-              <strong>${Number(summary.subtotal).toFixed(2)}</strong>
+              <strong>{formatINR(summary.subtotal)}</strong>
             </div>
 
             <div className="summary-row">
-              <span>Carbon-Neutral Shipping:</span>
+              <span>Carbon-Neutral Delivery:</span>
               <span className="text-forest" style={{ fontWeight: 700 }}>FREE</span>
             </div>
 
@@ -174,8 +175,8 @@ export default function CartPage() {
             <hr className="dropdown-divider" style={{ margin: '1rem 0' }} />
 
             <div className="summary-total-row">
-              <span>Estimated Total:</span>
-              <span className="summary-total-amount">${Number(summary.subtotal).toFixed(2)}</span>
+              <span>Order Total:</span>
+              <span className="summary-total-amount">{formatINR(summary.subtotal)}</span>
             </div>
 
             <p className="summary-note">

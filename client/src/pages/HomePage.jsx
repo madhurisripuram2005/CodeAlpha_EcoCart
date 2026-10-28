@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Leaf, ArrowRight, ShieldCheck, RefreshCw, Sparkles, Droplets, ShoppingBag, Award } from 'lucide-react';
+import {
+  Leaf, ArrowRight, ShieldCheck, RefreshCw, Sparkles, Droplets,
+  ShoppingBag, Award, Heart, Package, Sun, Compass, CheckCircle2, ChevronRight
+} from 'lucide-react';
 import { productAPI } from '../services/api';
 import ProductCard from '../components/ProductCard';
 import ImpactSummaryCard from '../components/ImpactSummaryCard';
 
 export default function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [bestsellers, setBestsellers] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [activeTab, setActiveTab] = useState('featured');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -16,13 +21,17 @@ export default function HomePage() {
       try {
         setLoading(true);
         setError(null);
-        const [prodRes, catRes] = await Promise.all([
-          productAPI.getProducts({ limit: 4, sort: 'featured' }),
+        const [featRes, bestRes, catRes] = await Promise.all([
+          productAPI.getProducts({ limit: 8, sort: 'featured' }),
+          productAPI.getProducts({ limit: 8, sort: 'eco_desc' }),
           productAPI.getCategories()
         ]);
 
-        if (prodRes.success) {
-          setFeaturedProducts(prodRes.products || []);
+        if (featRes.success) {
+          setFeaturedProducts(featRes.products || []);
+        }
+        if (bestRes.success) {
+          setBestsellers(bestRes.products || []);
         }
         if (catRes.success) {
           setCategories(catRes.categories || []);
@@ -36,12 +45,25 @@ export default function HomePage() {
     loadHomeData();
   }, []);
 
-  const sampleImpact = {
-    estimatedPlasticContainersAvoided: 2450,
-    estimatedSingleUseBagsSaved: 1890,
-    averageEcoScore: 93,
+  const departmentMeta = [
+    { name: 'Reusable Bottles & Drinkware', desc: 'Vacuum flasks, copper canteens & tumblers', count: 20, icon: Droplets, color: '#173F35' },
+    { name: 'Sustainable Bags & Accessories', desc: 'Jute totes, cork satchels & denim packs', count: 20, icon: ShoppingBag, color: '#276356' },
+    { name: 'Eco-Friendly Stationery', desc: 'Plantable seed pencils, stone & elephant journals', count: 20, icon: Leaf, color: '#337b6b' },
+    { name: 'Home & Kitchen Essentials', desc: 'Cast iron, beeswax wraps & coconut scrubbers', count: 25, icon: RefreshCw, color: '#429582' },
+    { name: 'Personal Care & Reusable Products', desc: 'Safety razors, bamboo brushes & shampoo bars', count: 15, icon: Award, color: '#173F35' },
+    { name: 'Sustainable Fashion', desc: 'Organic khadi shirts, hemp denim & flax linen', count: 15, icon: Sparkles, color: '#276356' },
+    { name: 'Gardening & Outdoor Products', desc: 'Coir seedling pots, solar lanterns & heirloom seeds', count: 15, icon: Sun, color: '#337b6b' },
+    { name: 'Travel & Lifestyle', desc: 'Solar power banks, bamboo cutlery & cork wallets', count: 10, icon: Compass, color: '#429582' }
+  ];
+
+  const communityImpact = {
+    estimatedPlasticContainersAvoided: 18450,
+    estimatedSingleUseBagsSaved: 14200,
+    averageEcoScore: 95,
     disclaimer: 'Illustrative community benchmark calculated from combined purchases of reusable canteens and organic fiber totes.'
   };
+
+  const displayedProducts = activeTab === 'featured' ? featuredProducts : bestsellers;
 
   return (
     <div className="home-page">
@@ -51,55 +73,57 @@ export default function HomePage() {
           <div className="hero-content">
             <div className="hero-pill">
               <Sparkles size={14} />
-              <span>Smart Sustainable Shopping</span>
+              <span>140+ Zero-Waste Essentials in Stock</span>
             </div>
             <h1 className="hero-heading">
-              Shop with <span className="text-forest-gradient">Planetary Intelligence.</span>
+              Conscious Living, <span className="text-forest-gradient">Measurable Impact.</span>
             </h1>
             <p className="hero-subtext">
-              EcoCart helps conscious consumers discover premium everyday essentials, verify their environmental lifecycle with illustrative <strong>EcoScores</strong>, and make intelligent zero-waste choices.
+              EcoCart helps conscious consumers discover premium everyday essentials, verify their environmental lifecycle with illustrative <strong>EcoScores (0–100)</strong>, and eliminate single-use plastic with every order.
             </p>
-            <div className="hero-actions">
+
+            <div className="hero-cta-group">
               <Link to="/products" className="btn btn-primary btn-lg">
-                <span>Explore Eco Catalog</span>
+                <span>Shop 140+ Eco Products</span>
                 <ArrowRight size={18} />
               </Link>
-              <a href="#how-it-works" className="btn btn-secondary btn-lg">
+              <a href="#how-it-works" className="btn btn-outline btn-lg">
                 <span>How EcoScore Works</span>
               </a>
             </div>
 
-            {/* Quick stats banner */}
-            <div className="hero-trust-row">
-              <div className="trust-stat">
-                <strong>100%</strong>
-                <span>Plastic-Free Packaged</span>
+            {/* Quick Trust Highlights */}
+            <div className="hero-trust-bar">
+              <div className="trust-item">
+                <CheckCircle2 size={16} className="text-success" />
+                <span>Zero Plastic Packaging</span>
               </div>
-              <div className="trust-divider" />
-              <div className="trust-stat">
-                <strong>0–100</strong>
-                <span>Lifecycle EcoScores</span>
+              <div className="trust-item">
+                <CheckCircle2 size={16} className="text-success" />
+                <span>Transparent EcoScores</span>
               </div>
-              <div className="trust-divider" />
-              <div className="trust-stat">
-                <strong>Zero</strong>
-                <span>Greenwashing</span>
+              <div className="trust-item">
+                <CheckCircle2 size={16} className="text-success" />
+                <span>Simulated INR Checkout</span>
               </div>
             </div>
           </div>
 
-          <div className="hero-visual">
-            <div className="hero-image-card card">
-              <img
-                src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1000&q=80"
-                alt="Eco-friendly bamboo and sustainable home products"
-                className="hero-main-img"
-              />
-              <div className="hero-floating-badge">
-                <Leaf size={18} className="text-forest" />
-                <div>
-                  <strong>Average 92+ EcoScore</strong>
-                  <span>Sustainably sourced botanicals</span>
+          <div className="hero-banner-visual">
+            <div className="hero-card-stack">
+              <div className="hero-image-card">
+                <img
+                  src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80"
+                  alt="Sustainable lifestyle showcase"
+                  className="hero-main-img"
+                />
+                <div className="hero-floating-badge badge-top">
+                  <Leaf size={16} />
+                  <span>EcoScore: 98/100</span>
+                </div>
+                <div className="hero-floating-badge badge-bottom">
+                  <ShieldCheck size={16} />
+                  <span>100% Biodegradable</span>
                 </div>
               </div>
             </div>
@@ -107,143 +131,183 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. Categories Section */}
-      <section className="section-categories">
+      {/* 2. Departments / 8 Category Tiles */}
+      <section className="departments-section">
         <div className="container">
           <div className="section-header text-center">
-            <span className="section-eyebrow">Explore Collections</span>
-            <h2 className="section-title">Shop by Sustainable Category</h2>
-            <p className="section-desc">Carefully curated product families created from renewable, recycled, and biodegradable materials.</p>
+            <span className="section-eyebrow">Explore Sustainable Living</span>
+            <h2 className="section-title">Shop by Eco Department</h2>
+            <p className="section-description">
+              Browse 140 curated products across 8 sustainable lifestyle categories.
+            </p>
           </div>
 
-          <div className="categories-grid">
-            <Link to="/products?category=Reusable+Bottles" className="category-card card card-hover">
-              <div className="cat-icon-wrap cat-bottles">
-                <Droplets size={28} />
-              </div>
-              <h3 className="cat-title">Reusable Bottles</h3>
-              <p className="cat-count">Stainless steel, titanium & borosilicate</p>
-              <span className="cat-link-text">Browse Bottles →</span>
-            </Link>
-
-            <Link to="/products?category=Sustainable+Bags" className="category-card card card-hover">
-              <div className="cat-icon-wrap cat-bags">
-                <ShoppingBag size={28} />
-              </div>
-              <h3 className="cat-title">Sustainable Bags</h3>
-              <p className="cat-count">Organic cotton, recycled ocean PET & cork</p>
-              <span className="cat-link-text">Browse Bags →</span>
-            </Link>
-
-            <Link to="/products?category=Eco+Stationery" className="category-card card card-hover">
-              <div className="cat-icon-wrap cat-stationery">
-                <Leaf size={28} />
-              </div>
-              <h3 className="cat-title">Eco Stationery</h3>
-              <p className="cat-count">Plantable seed pencils & stone paper</p>
-              <span className="cat-link-text">Browse Stationery →</span>
-            </Link>
-
-            <Link to="/products?category=Home+Essentials" className="category-card card card-hover">
-              <div className="cat-icon-wrap cat-home">
-                <Award size={28} />
-              </div>
-              <h3 className="cat-title">Home Essentials</h3>
-              <p className="cat-count">Solid dish blocks, soy candles & bamboo sheets</p>
-              <span className="cat-link-text">Browse Home →</span>
-            </Link>
+          <div className="departments-grid">
+            {departmentMeta.map((dept) => {
+              const IconComp = dept.icon;
+              return (
+                <Link
+                  key={dept.name}
+                  to={`/products?category=${encodeURIComponent(dept.name)}`}
+                  className="department-card card card-hover"
+                >
+                  <div className="department-icon-wrap" style={{ backgroundColor: `${dept.color}15`, color: dept.color }}>
+                    <IconComp size={24} />
+                  </div>
+                  <div className="department-info">
+                    <h3 className="department-title">{dept.name}</h3>
+                    <p className="department-desc">{dept.desc}</p>
+                    <span className="department-badge">{dept.count}+ items</span>
+                  </div>
+                  <ChevronRight size={18} className="department-arrow" />
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* 3. Curated Featured Products */}
-      <section className="section-featured">
+      {/* 3. Featured Showcase Tabs (Featured / Highest EcoScore) */}
+      <section className="featured-section">
         <div className="container">
-          <div className="flex-between section-header-row">
+          <div className="showcase-header">
             <div>
-              <span className="section-eyebrow">Curated Picks</span>
-              <h2 className="section-title">Highest-Rated Eco Products</h2>
+              <span className="section-eyebrow">Handpicked Conscious Goods</span>
+              <h2 className="section-title">Curated Eco Essentials</h2>
             </div>
-            <Link to="/products" className="btn btn-outline btn-sm">
-              <span>View All 20 Products</span>
-              <ArrowRight size={14} />
-            </Link>
+
+            <div className="showcase-tabs">
+              <button
+                type="button"
+                className={`tab-btn ${activeTab === 'featured' ? 'active' : ''}`}
+                onClick={() => setActiveTab('featured')}
+              >
+                Featured Highlights
+              </button>
+              <button
+                type="button"
+                className={`tab-btn ${activeTab === 'top-eco' ? 'active' : ''}`}
+                onClick={() => setActiveTab('top-eco')}
+              >
+                Highest EcoScore (95+)
+              </button>
+            </div>
           </div>
 
           {loading ? (
-            <div className="catalog-loading">
-              <div className="spinner spinner-dark" style={{ width: '2.5rem', height: '2.5rem' }} />
-              <p>Fetching verified eco-friendly products...</p>
-            </div>
-          ) : error ? (
-            <div className="alert alert-danger">
-              <span>{error}</span>
+            <div className="products-grid-skeleton">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="skeleton-card" />
+              ))}
             </div>
           ) : (
-            <div className="grid-products">
-              {featuredProducts.map(product => (
+            <div className="products-grid">
+              {displayedProducts.slice(0, 8).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
           )}
+
+          <div className="section-footer-cta text-center">
+            <Link to="/products" className="btn btn-outline btn-lg">
+              <span>View All 140 Products in Catalog</span>
+              <ArrowRight size={18} />
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* 4. How EcoScore Works Section */}
-      <section id="how-it-works" className="section-ecoscore">
+      {/* 4. Sustainability Education Section */}
+      <section id="how-it-works" className="education-section">
         <div className="container">
-          <div className="ecoscore-box card">
-            <div className="ecoscore-text">
-              <span className="section-eyebrow">Methodology & Transparency</span>
-              <h2>How EcoCart Calculates Your EcoScore</h2>
-              <p>
-                Every product listed on EcoCart receives an illustrative sustainability score from 0 to 100 based on four transparent weighted criteria:
+          <div className="education-grid">
+            <div className="education-text">
+              <span className="section-eyebrow">Planetary Transparency</span>
+              <h2 className="section-title">How the EcoScore Model Works</h2>
+              <p className="education-lead">
+                Every product on EcoCart receives an illustrative 0–100 EcoScore evaluated across four lifecycle pillars.
               </p>
 
-              <div className="criteria-list">
-                <div className="criteria-item">
-                  <div className="criteria-num">01</div>
+              <div className="pillars-list">
+                <div className="pillar-item">
+                  <div className="pillar-num">01</div>
                   <div>
-                    <h4>Renewable & Recycled Materials (35%)</h4>
-                    <p>Post-consumer metals, GOTS organic cotton, and closed-loop bamboo viscose.</p>
+                    <h4>Recycled & Renewable Materials</h4>
+                    <p>Priority for FSC-certified bamboo, post-consumer stainless steel, organic unbleached cotton, and natural clay.</p>
                   </div>
                 </div>
 
-                <div className="criteria-item">
-                  <div className="criteria-num">02</div>
+                <div className="pillar-item">
+                  <div className="pillar-num">02</div>
                   <div>
-                    <h4>Plastic-Free & Biodegradable Packaging (25%)</h4>
-                    <p>Unbleached kraft card, water-based inks, and zero petroleum bubble wrap.</p>
+                    <h4>Carbon & Energy Footprint</h4>
+                    <p>Low-emission artisanal manufacturing, rain-fed agriculture (Kala cotton), and localized supply chains.</p>
                   </div>
                 </div>
 
-                <div className="criteria-item">
-                  <div className="criteria-num">03</div>
+                <div className="pillar-item">
+                  <div className="pillar-num">03</div>
                   <div>
-                    <h4>Durability & Single-Use Elimination (25%)</h4>
-                    <p>Multi-year lifecycle testing designed to replace thousands of single-use items.</p>
+                    <h4>Circularity & End-of-Life</h4>
+                    <p>Multi-year product longevity, heirloom materials, and zero non-biodegradable synthetic microfibers.</p>
                   </div>
                 </div>
 
-                <div className="criteria-item">
-                  <div className="criteria-num">04</div>
+                <div className="pillar-item">
+                  <div className="pillar-num">04</div>
                   <div>
-                    <h4>Low-Impact Freight & Supply Chain (15%)</h4>
-                    <p>Efficient flat-pack geometries and verified carbon-neutral transport.</p>
+                    <h4>100% Plastic-Free Packaging</h4>
+                    <p>Shipped exclusively in compostable kraft cartons, water-activated paper tape, and cotton rag cushions.</p>
                   </div>
                 </div>
               </div>
 
-              <div className="criteria-disclaimer">
+              <div className="disclaimer-callout">
                 <ShieldCheck size={16} />
                 <span>
-                  <strong>Prototype Labeling:</strong> Scores are illustrative prototype models created for platform testing and demonstration, not certified ISO 14040 environmental certifications.
+                  <strong>Illustrative Model Disclosure:</strong> EcoScores are computed algorithmically for educational and comparative demonstration in this internship prototype. They do not constitute certified ISO lifecycle audits.
                 </span>
               </div>
             </div>
 
-            <div className="ecoscore-visual">
-              <ImpactSummaryCard impact={sampleImpact} title="Community Eco Impact" />
+            <div className="education-visual">
+              <ImpactSummaryCard impact={communityImpact} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Brand Mission & Values */}
+      <section className="mission-section">
+        <div className="container">
+          <div className="mission-card">
+            <div className="mission-content">
+              <h2>Join the Zero-Waste Movement with EcoCart</h2>
+              <p>
+                Every choice counts. By choosing reusable alternatives, you actively reduce ocean plastics, save gallons of clean water, and support ethical artisan weavers and craftsmen across the country.
+              </p>
+              <div className="mission-stats">
+                <div className="stat-box">
+                  <span className="stat-number">140+</span>
+                  <span className="stat-label">Sustainable Products</span>
+                </div>
+                <div className="stat-box">
+                  <span className="stat-number">8</span>
+                  <span className="stat-label">Conscious Departments</span>
+                </div>
+                <div className="stat-box">
+                  <span className="stat-number">95.4</span>
+                  <span className="stat-label">Average EcoScore</span>
+                </div>
+                <div className="stat-box">
+                  <span className="stat-number">100%</span>
+                  <span className="stat-label">Plastic-Free Shipping</span>
+                </div>
+              </div>
+              <Link to="/register" className="btn btn-primary btn-lg">
+                <span>Create Free Account</span>
+                <ArrowRight size={18} />
+              </Link>
             </div>
           </div>
         </div>

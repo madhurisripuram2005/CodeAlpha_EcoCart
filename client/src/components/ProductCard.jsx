@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, Check, AlertCircle } from 'lucide-react';
+import { ShoppingBag, Check, AlertCircle, Heart } from 'lucide-react';
 import EcoScoreBadge from './EcoScoreBadge';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useWishlist } from '../context/WishlistContext';
+import { formatINR } from '../utils/formatters';
 
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const { isAuthenticated } = useAuth();
+  const { isInWishlist, toggleWishlist } = useWishlist();
+
   const [adding, setAdding] = useState(false);
   const [added, setAdded] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -16,6 +20,7 @@ export default function ProductCard({ product }) {
 
   const isOutOfStock = product.stock <= 0;
   const isLowStock = product.stock > 0 && product.stock <= 20;
+  const inWishlist = isInWishlist(product.id);
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
@@ -42,7 +47,13 @@ export default function ProductCard({ product }) {
     }
   };
 
-  const fallbackImage = `https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=600&q=80`;
+  const handleWishlistToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(product);
+  };
+
+  const fallbackImage = 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=600&q=80';
 
   return (
     <div className="product-card card card-hover">
@@ -55,9 +66,22 @@ export default function ProductCard({ product }) {
             loading="lazy"
             onError={() => setImgError(true)}
           />
+          
+          {/* Top Overlays */}
           <div className="product-badge-overlay">
             <EcoScoreBadge score={product.eco_score} size="sm" />
           </div>
+
+          <button
+            type="button"
+            className={`wishlist-heart-btn ${inWishlist ? 'active' : ''}`}
+            onClick={handleWishlistToggle}
+            aria-label={inWishlist ? 'Remove from wishlist' : 'Save to wishlist'}
+            title={inWishlist ? 'Saved in wishlist' : 'Save to wishlist'}
+          >
+            <Heart size={16} fill={inWishlist ? '#C57B57' : 'none'} color={inWishlist ? '#C57B57' : 'currentColor'} />
+          </button>
+
           {product.is_featured === 1 && (
             <span className="featured-pill">Featured</span>
           )}
@@ -68,7 +92,7 @@ export default function ProductCard({ product }) {
           <h3 className="product-title" title={product.name}>{product.name}</h3>
           
           <div className="product-pricing-stock">
-            <span className="product-price">${Number(product.price).toFixed(2)}</span>
+            <span className="product-price">{formatINR(product.price)}</span>
             {isOutOfStock ? (
               <span className="stock-pill stock-out">Out of Stock</span>
             ) : isLowStock ? (

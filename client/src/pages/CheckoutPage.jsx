@@ -7,6 +7,7 @@ import {
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { orderAPI } from '../services/api';
+import { formatINR } from '../utils/formatters';
 
 export default function CheckoutPage() {
   const { items, summary, clearCart, refreshCart } = useCart();
@@ -16,13 +17,13 @@ export default function CheckoutPage() {
   const [formData, setFormData] = useState({
     shipping_name: user ? user.name : '',
     shipping_address: '',
-    shipping_city: '',
-    shipping_postal_code: '',
-    shipping_country: 'United States',
+    shipping_city: 'Bengaluru',
+    shipping_postal_code: '560001',
+    shipping_country: 'India',
     payment_method: 'simulated_card'
   });
 
-  const [cardMock, setCardMock] = useState({
+  const [cardMock] = useState({
     cardNumber: '4242 •••• •••• 4242',
     expDate: '12/28',
     cvv: '999'
@@ -74,7 +75,7 @@ export default function CheckoutPage() {
           <span className="badge badge-forest" style={{ margin: '0.5rem auto' }}>Simulated Payment Approved</span>
           <h1 className="success-heading">Order Placed Successfully!</h1>
           <p className="success-subtext">
-            Thank you for choosing conscious, sustainable goods. A simulated confirmation email has been dispatched.
+            Thank you for choosing conscious, sustainable goods. A simulated order receipt has been created and logged in the database.
           </p>
 
           <div className="order-reference-box">
@@ -83,16 +84,16 @@ export default function CheckoutPage() {
               <strong className="order-ref-code">{placedOrder.order_number}</strong>
             </div>
             <div className="order-ref-row">
-              <span>Simulated Total:</span>
-              <strong>${Number(placedOrder.total_amount).toFixed(2)}</strong>
+              <span>Order Total:</span>
+              <strong>{formatINR(placedOrder.total_amount)}</strong>
             </div>
             <div className="order-ref-row">
               <span>Order Status:</span>
               <span className="badge badge-warning">{placedOrder.status}</span>
             </div>
             <div className="order-ref-row">
-              <span>Shipping To:</span>
-              <span>{placedOrder.shipping_name}, {placedOrder.shipping_city}, {placedOrder.shipping_country}</span>
+              <span>Delivery To:</span>
+              <span>{placedOrder.shipping_name}, {placedOrder.shipping_city}, {placedOrder.shipping_country} ({placedOrder.shipping_postal_code})</span>
             </div>
           </div>
 
@@ -151,14 +152,14 @@ export default function CheckoutPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Street Address</label>
+                <label className="form-label">Street Address & Landmark</label>
                 <input
                   type="text"
                   name="shipping_address"
                   value={formData.shipping_address}
                   onChange={handleChange}
                   required
-                  placeholder="e.g. 142 Green Meadow Way, Apt 4"
+                  placeholder="e.g. 42 Green Orchard Road, Indiranagar"
                   className="form-input"
                 />
               </div>
@@ -172,20 +173,20 @@ export default function CheckoutPage() {
                     value={formData.shipping_city}
                     onChange={handleChange}
                     required
-                    placeholder="e.g. Portland"
+                    placeholder="e.g. Bengaluru"
                     className="form-input"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Postal / Zip Code</label>
+                  <label className="form-label">PIN / Postal Code</label>
                   <input
                     type="text"
                     name="shipping_postal_code"
                     value={formData.shipping_postal_code}
                     onChange={handleChange}
                     required
-                    placeholder="e.g. 97201"
+                    placeholder="e.g. 560001"
                     className="form-input"
                   />
                 </div>
@@ -214,13 +215,13 @@ export default function CheckoutPage() {
               <div className="alert alert-info">
                 <ShieldCheck size={18} />
                 <div>
-                  <strong>Demonstration Environment:</strong> Simulated payment for academic prototype. No real card details are collected or processed.
+                  <strong>Academic Demonstration Prototype:</strong> This store uses a simulated test payment flow. No real credit/debit card numbers are collected, stored, or processed.
                 </div>
               </div>
 
               <div className="simulated-card-box">
                 <div className="form-group">
-                  <label className="form-label">Mock Card Number</label>
+                  <label className="form-label">Simulated Test Card Number</label>
                   <input
                     type="text"
                     value={cardMock.cardNumber}
@@ -270,7 +271,7 @@ export default function CheckoutPage() {
               ) : (
                 <>
                   <Lock size={18} />
-                  <span>Place Simulated Order (${Number(summary.subtotal).toFixed(2)})</span>
+                  <span>Place Simulated Order ({formatINR(summary.subtotal)})</span>
                 </>
               )}
             </button>
@@ -292,9 +293,9 @@ export default function CheckoutPage() {
                   />
                   <div className="checkout-item-details">
                     <span className="checkout-item-name">{item.name}</span>
-                    <span className="checkout-item-sub">Qty: {item.quantity} × ${Number(item.price).toFixed(2)}</span>
+                    <span className="checkout-item-sub">Qty: {item.quantity} × {formatINR(item.price)}</span>
                   </div>
-                  <strong className="checkout-item-price">${Number(item.subtotal).toFixed(2)}</strong>
+                  <strong className="checkout-item-price">{formatINR(item.subtotal)}</strong>
                 </div>
               ))}
             </div>
@@ -303,7 +304,7 @@ export default function CheckoutPage() {
 
             <div className="summary-row">
               <span>Subtotal:</span>
-              <strong>${Number(summary.subtotal).toFixed(2)}</strong>
+              <strong>{formatINR(summary.subtotal)}</strong>
             </div>
 
             <div className="summary-row">
@@ -313,7 +314,7 @@ export default function CheckoutPage() {
 
             <div className="summary-total-row">
               <span>Total to Pay:</span>
-              <span className="summary-total-amount">${Number(summary.subtotal).toFixed(2)}</span>
+              <span className="summary-total-amount">{formatINR(summary.subtotal)}</span>
             </div>
           </div>
         </aside>

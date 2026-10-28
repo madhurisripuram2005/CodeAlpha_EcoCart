@@ -9,6 +9,7 @@ import cartRoutes from './routes/cartRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import wishlistRoutes from './routes/wishlistRoutes.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { db } from './database/db.js';
 
@@ -55,6 +56,7 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/wishlist', wishlistRoutes);
 
 // Error Handling Middleware
 app.use(notFoundHandler);

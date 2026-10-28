@@ -7,6 +7,7 @@ import { userAPI, orderAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import ImpactSummaryCard from '../components/ImpactSummaryCard';
 import EcoScoreBadge from '../components/EcoScoreBadge';
+import { formatINR } from '../utils/formatters';
 
 export default function ProfilePage() {
   const { user, updateUser } = useAuth();
@@ -203,7 +204,7 @@ export default function ProfilePage() {
                         </div>
 
                         <div className="order-price-status">
-                          <span className="order-amount">${Number(order.total_amount).toFixed(2)}</span>
+                          <span className="order-amount">{formatINR(order.total_amount)}</span>
                           <span className={`badge ${
                             order.status === 'delivered' ? 'badge-forest' :
                             order.status === 'processing' ? 'badge-info' :
@@ -244,10 +245,10 @@ export default function ProfilePage() {
                                     <span className="order-item-name">{item.product_name}</span>
                                     <div className="flex-align-center gap-2" style={{ marginTop: '0.25rem' }}>
                                       <EcoScoreBadge score={item.eco_score} size="sm" />
-                                      <span className="order-item-qty-price">{item.quantity} × ${Number(item.unit_price).toFixed(2)}</span>
+                                      <span className="order-item-qty-price">{item.quantity} × {formatINR(item.unit_price)}</span>
                                     </div>
                                   </div>
-                                  <strong className="order-item-subtotal">${Number(item.subtotal).toFixed(2)}</strong>
+                                  <strong className="order-item-subtotal">{formatINR(item.subtotal)}</strong>
                                 </div>
                               ))}
                             </div>

@@ -2,19 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ShoppingBag, Check, ShieldCheck, ArrowLeft, AlertCircle,
-  Plus, Minus, Sparkles, RefreshCw, Box, Leaf, Info
+  Plus, Minus, Sparkles, RefreshCw, Box, Leaf, Info, Heart
 } from 'lucide-react';
 import { productAPI } from '../services/api';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useWishlist } from '../context/WishlistContext';
 import EcoScoreBadge from '../components/EcoScoreBadge';
 import AlternativeCard from '../components/AlternativeCard';
+import { formatINR } from '../utils/formatters';
 
 export default function ProductDetailPage() {
   const { idOrSlug } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const { isAuthenticated } = useAuth();
+  const { isInWishlist, toggleWishlist } = useWishlist();
 
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -104,6 +107,7 @@ export default function ProductDetailPage() {
 
   const isOutOfStock = product.stock <= 0;
   const isLowStock = product.stock > 0 && product.stock <= 20;
+  const inWishlist = isInWishlist(product.id);
   const factors = typeof product.eco_factors === 'object' ? product.eco_factors : {};
   const fallbackImg = 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80';
 
@@ -152,15 +156,27 @@ export default function ProductDetailPage() {
 
           {/* Product Purchase & Details Column */}
           <div className="detail-info-col">
-            <span className="detail-category-badge">{product.category}</span>
+            <div className="flex-between">
+              <span className="detail-category-badge">{product.category}</span>
+              <button
+                type="button"
+                className={`detail-wishlist-toggle ${inWishlist ? 'active' : ''}`}
+                onClick={() => toggleWishlist(product)}
+                title={inWishlist ? 'Remove from wishlist' : 'Save to wishlist'}
+              >
+                <Heart size={18} fill={inWishlist ? '#C57B57' : 'none'} color={inWishlist ? '#C57B57' : 'currentColor'} />
+                <span>{inWishlist ? 'Saved in Wishlist' : 'Add to Wishlist'}</span>
+              </button>
+            </div>
+
             <h1 className="detail-title">{product.name}</h1>
 
             <div className="detail-price-row">
-              <span className="detail-price">${Number(product.price).toFixed(2)}</span>
+              <span className="detail-price">{formatINR(product.price)}</span>
               {isOutOfStock ? (
                 <span className="badge badge-danger">Out of Stock</span>
               ) : isLowStock ? (
-                <span className="badge badge-warning">Low Stock: {product.stock} left</span>
+                <span className="badge badge-warning">Low Stock: Only {product.stock} left</span>
               ) : (
                 <span className="badge badge-forest">In Stock ({product.stock} available)</span>
               )}
@@ -198,7 +214,7 @@ export default function ProductDetailPage() {
 
                 <div className="purchase-subtotal">
                   <span>Subtotal:</span>
-                  <strong>${(product.price * quantity).toFixed(2)}</strong>
+                  <strong>{formatINR(product.price * quantity)}</strong>
                 </div>
               </div>
 
@@ -238,53 +254,75 @@ export default function ProductDetailPage() {
             {/* EcoScore Breakdown Factors Box */}
             <div className="ecoscore-breakdown card">
               <div className="flex-between breakdown-header">
-                <div className="flex-align-center gap-2">
-                  <Sparkles size={20} className="text-forest" />
-                  <h3 className="breakdown-title">Illustrative EcoScore Breakdown</h3>
+                <div>
+                  <h3 className="breakdown-title">
+                    <ShieldCheck size={18} className="text-forest" />
+                    <span>Lifecycle Environmental Factors</span>
+                  </h3>
+                  <p className="breakdown-subtitle">Detailed breakdown contributing to the {product.eco_score}/100 rating</p>
                 </div>
                 <EcoScoreBadge score={product.eco_score} size="md" />
               </div>
 
               <div className="factors-list">
-                {Object.entries(factors).map(([key, val]) => (
-                  <div key={key} className="factor-row">
-                    <strong className="factor-key">
-                      {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
-                    </strong>
-                    <span className="factor-val">{val.toString()}</span>
+                {factors.recycled_content && (
+                  <div className="factor-row">
+                    <span className="factor-label">Recycled Content:</span>
+                    <span className="factor-value">{factors.recycled_content}</span>
                   </div>
-                ))}
+                )}
+                {factors.organic_elements && (
+                  <div className="factor-row">
+                    <span className="factor-label">Organic & Natural:</span>
+                    <span className="factor-value">{factors.organic_elements}</span>
+                  </div>
+                )}
+                {factors.packaging && (
+                  <div className="factor-row">
+                    <span className="factor-label">Zero-Plastic Packaging:</span>
+                    <span className="factor-value">{factors.packaging}</span>
+                  </div>
+                )}
+                {factors.longevity && (
+                  <div className="factor-row">
+                    <span className="factor-label">Durability & Lifespan:</span>
+                    <span className="factor-value">{factors.longevity}</span>
+                  </div>
+                )}
+                {factors.single_use_elimination && (
+                  <div className="factor-row">
+                    <span className="factor-label">Plastic Elimination:</span>
+                    <span className="factor-value text-forest font-semibold">{factors.single_use_elimination}</span>
+                  </div>
+                )}
               </div>
 
-              <div className="breakdown-disclaimer">
-                <Info size={14} className="disclaimer-icon" />
+              <div className="disclaimer-callout">
+                <Info size={14} />
                 <span>
-                  <strong>Illustrative Score:</strong> {product.eco_disclaimer}
+                  <strong>Illustrative Score Disclosure:</strong> EcoScores are computed based on standardized material lifecycle attributes for demonstration purposes. They do not constitute certified ISO environmental audits.
                 </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* 5. Sustainable Alternatives Section */}
+        {/* Sustainable Alternatives Section */}
         {product.alternatives && product.alternatives.length > 0 && (
-          <section className="section-alternatives">
-            <div className="flex-between alternatives-header">
-              <div>
-                <span className="section-eyebrow">Smart Comparison</span>
-                <h2 className="section-title">Sustainable Alternatives</h2>
-                <p className="section-desc">
-                  Explore recommended items in this category with higher or comparable EcoScores.
-                </p>
+          <section className="alternatives-section">
+            <div className="section-header">
+              <div className="page-header-badge">
+                <Sparkles size={14} className="text-accent" />
+                <span>Intelligent Recommendations</span>
               </div>
-              <div className="badge badge-forest">
-                <RefreshCw size={14} />
-                <span>Intelligent Suggestions</span>
-              </div>
+              <h2 className="section-title">Greener Sustainable Alternatives</h2>
+              <p className="section-description">
+                Consider these comparable options in <strong>{product.category}</strong> with equal or higher EcoScores:
+              </p>
             </div>
 
             <div className="alternatives-grid">
-              {product.alternatives.map(alt => (
+              {product.alternatives.map((alt) => (
                 <AlternativeCard key={alt.id} alternative={alt} />
               ))}
             </div>

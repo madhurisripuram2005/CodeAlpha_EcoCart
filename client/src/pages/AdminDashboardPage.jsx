@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { adminAPI } from '../services/api';
 import EcoScoreBadge from '../components/EcoScoreBadge';
+import { formatINR } from '../utils/formatters';
 
 export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState('analytics'); // 'analytics' | 'products' | 'orders'
@@ -29,7 +30,7 @@ export default function AdminDashboardPage() {
     name: '',
     description: '',
     price: '',
-    category: 'Reusable Bottles',
+    category: 'Reusable Bottles & Drinkware',
     stock: '',
     eco_score: 90,
     image_url: '',
@@ -236,10 +237,10 @@ export default function AdminDashboardPage() {
             {/* KPI Cards Row */}
             <div className="kpi-grid">
               <div className="kpi-card card">
-                <div className="kpi-icon-wrap" style={{ backgroundColor: '#d8f3dc', color: '#1b4332' }}>
+                <div className="kpi-icon-wrap" style={{ backgroundColor: '#d8f3dc', color: '#173F35' }}>
                   <DollarSign size={24} />
                 </div>
-                <div className="kpi-value">${Number(kpis.totalSimulatedRevenue || 0).toFixed(2)}</div>
+                <div className="kpi-value">{formatINR(kpis.totalSimulatedRevenue || 0)}</div>
                 <div className="kpi-label">Simulated Revenue</div>
                 <span className="kpi-sub">Total simulated order volume</span>
               </div>
@@ -250,7 +251,7 @@ export default function AdminDashboardPage() {
                 </div>
                 <div className="kpi-value">{kpis.totalOrders || 0}</div>
                 <div className="kpi-label">Simulated Orders</div>
-                <span className="kpi-sub">Avg Order Value: ${Number(kpis.averageOrderValue || 0).toFixed(2)}</span>
+                <span className="kpi-sub">Avg Order Value: {formatINR(kpis.averageOrderValue || 0)}</span>
               </div>
 
               <div className="kpi-card card">
@@ -307,7 +308,7 @@ export default function AdminDashboardPage() {
                           </div>
                         </div>
                         <span className="text-forest" style={{ fontWeight: 800 }}>
-                          ${Number(tp.total_revenue_generated).toFixed(2)}
+                          {formatINR(tp.total_revenue_generated)}
                         </span>
                       </div>
                     ))}
@@ -327,7 +328,7 @@ export default function AdminDashboardPage() {
                         <div>
                           <strong>{lp.name}</strong>
                           <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--color-charcoal-400)' }}>
-                            {lp.category} • ${Number(lp.price).toFixed(2)}
+                            {lp.category} • {formatINR(lp.price)}
                           </span>
                         </div>
                         <span className="badge badge-warning" style={{ fontSize: '0.8125rem' }}>
@@ -384,7 +385,7 @@ export default function AdminDashboardPage() {
                           </div>
                         </td>
                         <td>{p.category}</td>
-                        <td><strong>${Number(p.price).toFixed(2)}</strong></td>
+                        <td><strong>{formatINR(p.price)}</strong></td>
                         <td>
                           <span className={`badge ${p.stock <= 0 ? 'badge-danger' : p.stock <= 20 ? 'badge-warning' : 'badge-forest'}`}>
                             {p.stock} units
@@ -470,7 +471,7 @@ export default function AdminDashboardPage() {
                           </div>
                         </td>
                         <td>{new Date(ord.created_at).toLocaleDateString()}</td>
-                        <td><strong>${Number(ord.total_amount).toFixed(2)}</strong></td>
+                        <td><strong>{formatINR(ord.total_amount)}</strong></td>
                         <td><span className="badge badge-forest">{ord.payment_status}</span></td>
                         <td>
                           <select
@@ -536,7 +537,7 @@ export default function AdminDashboardPage() {
 
               <div className="form-row-2">
                 <div className="form-group">
-                  <label className="form-label">Price ($)</label>
+                  <label className="form-label">Price (₹)</label>
                   <input
                     type="number"
                     step="0.01"
@@ -555,10 +556,14 @@ export default function AdminDashboardPage() {
                     onChange={(e) => setProductForm({ ...productForm, category: e.target.value })}
                     className="form-select"
                   >
-                    <option value="Reusable Bottles">Reusable Bottles</option>
-                    <option value="Sustainable Bags">Sustainable Bags</option>
-                    <option value="Eco Stationery">Eco Stationery</option>
-                    <option value="Home Essentials">Home Essentials</option>
+                    <option value="Reusable Bottles & Drinkware">Reusable Bottles & Drinkware</option>
+                    <option value="Sustainable Bags & Accessories">Sustainable Bags & Accessories</option>
+                    <option value="Eco-Friendly Stationery">Eco-Friendly Stationery</option>
+                    <option value="Home & Kitchen Essentials">Home & Kitchen Essentials</option>
+                    <option value="Personal Care & Reusable Products">Personal Care & Reusable Products</option>
+                    <option value="Sustainable Fashion">Sustainable Fashion</option>
+                    <option value="Gardening & Outdoor Products">Gardening & Outdoor Products</option>
+                    <option value="Travel & Lifestyle">Travel & Lifestyle</option>
                   </select>
                 </div>
               </div>
@@ -660,7 +665,7 @@ export default function AdminDashboardPage() {
 
               <div className="form-row-2">
                 <div className="form-group">
-                  <label className="form-label">Price ($)</label>
+                  <label className="form-label">Price (₹)</label>
                   <input
                     type="number"
                     step="0.01"
@@ -693,10 +698,14 @@ export default function AdminDashboardPage() {
                     onChange={(e) => setProductForm({ ...productForm, category: e.target.value })}
                     className="form-select"
                   >
-                    <option value="Reusable Bottles">Reusable Bottles</option>
-                    <option value="Sustainable Bags">Sustainable Bags</option>
-                    <option value="Eco Stationery">Eco Stationery</option>
-                    <option value="Home Essentials">Home Essentials</option>
+                    <option value="Reusable Bottles & Drinkware">Reusable Bottles & Drinkware</option>
+                    <option value="Sustainable Bags & Accessories">Sustainable Bags & Accessories</option>
+                    <option value="Eco-Friendly Stationery">Eco-Friendly Stationery</option>
+                    <option value="Home & Kitchen Essentials">Home & Kitchen Essentials</option>
+                    <option value="Personal Care & Reusable Products">Personal Care & Reusable Products</option>
+                    <option value="Sustainable Fashion">Sustainable Fashion</option>
+                    <option value="Gardening & Outdoor Products">Gardening & Outdoor Products</option>
+                    <option value="Travel & Lifestyle">Travel & Lifestyle</option>
                   </select>
                 </div>
 

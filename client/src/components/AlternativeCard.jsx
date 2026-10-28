@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, ArrowRight } from 'lucide-react';
 import EcoScoreBadge from './EcoScoreBadge';
+import { formatINR } from '../utils/formatters';
 
 export default function AlternativeCard({ alternative }) {
   const isHigher = alternative.scoreDifference > 0;
@@ -28,7 +29,7 @@ export default function AlternativeCard({ alternative }) {
         <div className="alt-details">
           <span className="alt-cat">{alternative.category}</span>
           <h4 className="alt-title">{alternative.name}</h4>
-          <span className="alt-price">${Number(alternative.price).toFixed(2)}</span>
+          <span className="alt-price">{formatINR(alternative.price)}</span>
         </div>
       </div>
 

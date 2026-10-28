@@ -97,3 +97,10 @@ export const adminAPI = {
   getOrders: (status = 'all') => request(`/admin/orders?status=${status}`),
   updateOrderStatus: (id, status) => request(`/admin/orders/${id}/status`, { method: 'PUT', body: { status } })
 };
+
+// 7. Wishlist API
+export const wishlistAPI = {
+  getWishlist: () => request('/wishlist'),
+  addToWishlist: (productId) => request('/wishlist', { method: 'POST', body: { productId } }),
+  removeFromWishlist: (productId) => request(`/wishlist/${productId}`, { method: 'DELETE' })
+};
