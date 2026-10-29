@@ -69,13 +69,17 @@ export default function Footer() {
         </div>
 
         <div className="footer-col">
-          <h4 className="footer-heading">Categories</h4>
+          <h4 className="footer-heading">Eco Departments</h4>
           <ul className="footer-links">
-            <li><Link to="/products?category=Reusable+Bottles">Reusable Bottles</Link></li>
-            <li><Link to="/products?category=Sustainable+Bags">Sustainable Bags</Link></li>
-            <li><Link to="/products?category=Eco+Stationery">Eco Stationery</Link></li>
-            <li><Link to="/products?category=Home+Essentials">Home Essentials</Link></li>
-            <li><Link to="/products">All Products</Link></li>
+            <li><Link to="/products?category=Reusable+Bottles+%26+Drinkware">Bottles & Drinkware</Link></li>
+            <li><Link to="/products?category=Sustainable+Bags+%26+Accessories">Bags & Accessories</Link></li>
+            <li><Link to="/products?category=Eco-Friendly+Stationery">Eco Stationery</Link></li>
+            <li><Link to="/products?category=Home+%26+Kitchen+Essentials">Home & Kitchen</Link></li>
+            <li><Link to="/products?category=Personal+Care+%26+Reusable+Products">Personal Care</Link></li>
+            <li><Link to="/products?category=Sustainable+Fashion">Sustainable Fashion</Link></li>
+            <li><Link to="/products?category=Gardening+%26+Outdoor+Products">Gardening & Outdoor</Link></li>
+            <li><Link to="/products?category=Travel+%26+Lifestyle">Travel & Lifestyle</Link></li>
+            <li><Link to="/products">All 140+ Products</Link></li>
           </ul>
         </div>
 

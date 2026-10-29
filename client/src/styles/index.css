@@ -3260,3 +3260,528 @@ img {
   }
 }
 
+
+/* ==========================================================================
+   Premium UI/UX Enhancements: Discounts, Reviews, Benefits, Tabs & Delivery
+   ========================================================================== */
+
+/* Discount Badges & MRP Pricing */
+.discount-pill {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background-color: var(--color-accent);
+  color: #ffffff;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-full);
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(197, 123, 87, 0.4);
+}
+
+.product-card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.product-rating-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-charcoal-800);
+}
+
+.product-rating-pill .rating-count {
+  font-size: 0.6875rem;
+  color: var(--color-charcoal-400);
+  font-weight: 400;
+}
+
+.price-stack {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.product-mrp-price {
+  font-size: 0.8125rem;
+  color: var(--color-charcoal-400);
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.detail-mrp-price {
+  font-size: 1.125rem;
+  color: var(--color-charcoal-400);
+  text-decoration: line-through;
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+
+.detail-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.stars-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.rating-score-text {
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: var(--color-charcoal-900);
+}
+
+.rating-divider {
+  color: var(--color-charcoal-300);
+}
+
+.rating-count-link {
+  font-size: 0.875rem;
+  color: var(--color-charcoal-500);
+}
+
+/* Eco-Benefits Bar */
+.eco-benefits-bar {
+  padding: 2.5rem 0;
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.benefit-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-elevated);
+  border: 1px solid var(--color-border-subtle);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.benefit-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.benefit-icon-box {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-md);
+  background-color: rgba(23, 63, 53, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.benefit-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-charcoal-900);
+  margin-bottom: 0.25rem;
+}
+
+.benefit-desc {
+  font-size: 0.8125rem;
+  color: var(--color-charcoal-500);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Business Value Section */
+.business-value-section {
+  padding: 4rem 0;
+  background-color: var(--color-surface-elevated);
+}
+
+.business-value-card {
+  padding: 3rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f9f6f0 100%);
+  border: 1px solid var(--color-border);
+  border-left: 6px solid var(--color-forest-700);
+}
+
+.business-value-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-forest-900);
+  margin: 0.5rem 0 0.75rem;
+}
+
+.business-value-lead {
+  font-size: 1.0625rem;
+  color: var(--color-charcoal-600);
+  max-width: 48rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.business-value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.value-pillar {
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-xs);
+}
+
+.value-pillar-number {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-forest-600);
+  margin-bottom: 0.5rem;
+}
+
+.value-pillar h4 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-charcoal-900);
+  margin-bottom: 0.5rem;
+}
+
+.value-pillar p {
+  font-size: 0.875rem;
+  color: var(--color-charcoal-600);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Customer Testimonials Section */
+.testimonials-section {
+  padding: 4.5rem 0;
+  background-color: var(--color-surface);
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 2.5rem;
+}
+
+.testimonial-card {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--color-border);
+  background-color: #ffffff;
+}
+
+.testimonial-quote {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--color-charcoal-700);
+  font-style: italic;
+  margin: 0 0 1.5rem;
+}
+
+.testimonial-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 2px solid var(--color-border);
+}
+
+.testimonial-name {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-charcoal-900);
+  margin: 0;
+}
+
+.testimonial-meta {
+  font-size: 0.75rem;
+  color: var(--color-charcoal-400);
+}
+
+/* Home Newsletter Banner */
+.newsletter-banner-section {
+  padding: 3rem 0;
+  background-color: var(--color-forest-900);
+}
+
+.newsletter-card {
+  background: linear-gradient(135deg, #173F35 0%, #1f5044 100%);
+  color: #ffffff;
+  padding: 3.5rem 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.newsletter-content {
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.newsletter-content h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0.5rem 0 1rem;
+}
+
+.newsletter-content p {
+  color: var(--color-ivory-200);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.home-newsletter-form {
+  display: flex;
+  gap: 0.75rem;
+  max-width: 30rem;
+  margin: 0 auto;
+}
+
+.newsletter-home-input {
+  flex: 1;
+  padding: 0.875rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.95);
+  font-size: 0.9375rem;
+  color: var(--color-charcoal-900);
+}
+
+.newsletter-confirm-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 1rem 1.75rem;
+  border-radius: var(--radius-lg);
+  text-align: left;
+}
+
+.newsletter-confirm-box p {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+}
+
+/* Delivery Pincode Checker */
+.pincode-checker-box {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background-color: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.pincode-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.pincode-input {
+  max-width: 14rem;
+}
+
+.pincode-result {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background-color: #ffffff;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+/* Product Detail Tabs */
+.detail-tabs-section {
+  margin-top: 3.5rem;
+}
+
+.detail-tabs-nav {
+  display: flex;
+  gap: 0.75rem;
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: 0.25rem;
+  overflow-x: auto;
+}
+
+.detail-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.25rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--color-charcoal-500);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.detail-tab-btn:hover {
+  color: var(--color-forest-700);
+}
+
+.detail-tab-btn.active {
+  color: var(--color-forest-800);
+  border-bottom-color: var(--color-forest-700);
+}
+
+.detail-tab-content {
+  margin-top: 1.5rem;
+}
+
+/* Reviews List */
+.reviews-tab-card {
+  padding: 2rem;
+}
+
+.reviews-summary-header {
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.review-item {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.review-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.review-meta {
+  margin-bottom: 0.25rem;
+}
+
+.review-author {
+  color: var(--color-charcoal-900);
+  font-size: 0.9375rem;
+}
+
+.review-city {
+  color: var(--color-charcoal-400);
+  font-size: 0.8125rem;
+}
+
+.verified-buyer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: rgba(23, 63, 53, 0.08);
+  color: var(--color-forest-800);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-full);
+}
+
+.review-date {
+  font-size: 0.75rem;
+  color: var(--color-charcoal-400);
+}
+
+.review-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-charcoal-900);
+  margin: 0.25rem 0 0.35rem;
+}
+
+.review-comment {
+  font-size: 0.875rem;
+  color: var(--color-charcoal-600);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Shipping Perks Grid */
+.shipping-tab-card {
+  padding: 2rem;
+}
+
+.shipping-perks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.shipping-perk-card {
+  padding: 1.5rem;
+  background-color: var(--color-surface-elevated);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+}
+
+.shipping-perk-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-charcoal-900);
+  margin: 0.75rem 0 0.5rem;
+}
+
+.shipping-perk-card p {
+  font-size: 0.8125rem;
+  color: var(--color-charcoal-600);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .benefits-grid,
+  .business-value-grid,
+  .testimonials-grid,
+  .shipping-perks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .benefits-grid,
+  .business-value-grid,
+  .testimonials-grid,
+  .shipping-perks-grid {
+    grid-template-columns: 1fr;
+  }
+  .home-newsletter-form {
+    flex-direction: column;
+  }
+}

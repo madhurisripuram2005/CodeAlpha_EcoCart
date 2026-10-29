@@ -1,13 +1,13 @@
 # EcoCart — Smart Sustainable Shopping Platform
 
 > Complete full-stack web application built for the **CodeAlpha Full Stack Development Internship**.
-> Repository: `CodeAlpha_EcoCart`
+> Repository Name: `CodeAlpha_EcoCart`
 
 EcoCart is an e-commerce platform designed to help consumers discover, evaluate, and purchase eco-friendly products. It pairs rich product information with transparent sustainability intelligence (**EcoScore** from 0–100), automated sustainable alternative recommendations, personal environmental impact tracking, full wishlist management, and an executive administration portal.
 
 ---
 
-## Key Features & Upgrades
+## Key Features & Capabilities
 
 1. **140 Sustainable Products across 8 Departments**:
    - Reusable Bottles & Drinkware (15 products)
@@ -26,15 +26,26 @@ EcoCart is an e-commerce platform designed to help consumers discover, evaluate,
 3. **Standardized INR (`₹`) Pricing**:
    - Realistic Indian Rupee pricing across all items (`₹199` – `₹3,999`).
    - Server-validated pricing with currency-formatted cards, cart subtotals, and simulated checkout.
+   - Original MRP strikethrough and realistic discount badges (`-20% OFF`).
 4. **Wishlist System**:
    - Guest fallback using browser `localStorage` + authenticated cloud sync (`GET /api/wishlist`, `POST /api/wishlist`, `DELETE /api/wishlist/:id`).
    - Dynamic navbar heart badge with live counter.
-5. **Executive Admin Dashboard**:
+5. **Interactive Storefront & Home Experience**:
+   - Hero banner with conscious living call-to-actions.
+   - Four core eco-benefit highlight cards (Plastic-Free Packaging, Carbon-Neutral Transit, Circular Lifecycle, Direct Artisan Sourcing).
+   - Tabbed showcase for Featured Highlights, Top EcoScores (95+), and New Arrivals.
+   - Pincode delivery estimator with instant carbon-neutral transit estimates.
+   - Customer community reviews with verified buyer badges and star ratings.
+   - Free Zero-Waste Living Handbook newsletter subscription banner.
+   - Business Value section explaining how EcoCart promotes sustainable consumption.
+6. **Executive Admin Dashboard**:
    - Real-time KPIs (simulated revenue in INR, total orders, average order value, customer base).
+   - Department & Category sales performance table.
    - Inventory low-stock alerts table with replenishment triggers.
    - Product CRUD management supporting all 8 categories and automated slug generation.
    - Order fulfillment workflow (`pending` → `processing` → `shipped` → `delivered` → `cancelled`).
-6. **Robust Architecture & Security**:
+   - Explicit disclaimer banner distinguishing simulated prototype metrics from commercial revenue.
+7. **Robust Architecture & Security**:
    - Node.js LTS native `node:sqlite` engine with foreign key enforcement and WAL journal mode.
    - Atomic database transactions for cart checkouts and stock deductions.
    - JWT sessions with HTTP-only cookies and bcrypt-hashed credentials.
@@ -44,7 +55,7 @@ EcoCart is an e-commerce platform designed to help consumers discover, evaluate,
 
 ## Visual Design System
 
-- **Forest Green** (`#173F35`): Primary brand color, headers, hero highlights, and action buttons.
+- **Forest Green** (`#173F35`, `#1F5044`): Primary brand color, headers, hero highlights, and action buttons.
 - **Warm Ivory / Cream** (`#F5F0E5`, `#FAF7F2`, `#EFEAE1`): Backgrounds, pill badges, and elevated card surfaces.
 - **Charcoal Text** (`#1C1E1D`, `#3D4340`): High-contrast, readable typography.
 - **Warm Ochre / Coral Accent** (`#C57B57`): Alerts, badges, and rating stars.
@@ -129,8 +140,8 @@ Pre-configured demo accounts for grading and testing:
 
 | Role | Email | Password | Intended Use |
 | :--- | :--- | :--- | :--- |
-| **Store Administrator** | `admin@ecocart.local` | `EcoAdmin#2026!` | Access `/admin` dashboard, inventory management, order status |
-| **Primary Customer** | `jane.eco@example.local` | `GreenLiving#2026!` | Browsing catalogue, wishlist, cart, simulated checkout, profile |
+| **Store Administrator** | `admin@ecocart.local` | `EcoAdmin#2026!` | Access `/admin` dashboard, analytics in INR, inventory low-stock alerts, product CRUD, order status management |
+| **Primary Customer** | `jane.eco@example.local` | `GreenLiving#2026!` | Storefront browsing, wishlist heart toggle, persistent cart, simulated checkout, order history |
 | **Secondary Customer** | `marcus.green@example.local` | `EcoShopper#2026!` | Verification of multi-user isolation and order data privacy |
 
 > **Note on Simulated Checkout**: Payment transactions are simulated for internship demonstration purposes. No real banking details or payment credentials are required or processed.
@@ -222,6 +233,7 @@ ECO CART/
 │   │   └── main.jsx            # React root mount
 │   ├── index.html              # HTML shell
 │   ├── package.json
+│   ├── .env.example
 │   └── vite.config.js          # API proxy (/api -> http://localhost:5000)
 │
 ├── server/                     # Express.js REST API Backend
@@ -243,9 +255,11 @@ ECO CART/
 │   │   ├── app.js              # Express app setup, CORS, cookie parser, route mounting
 │   │   └── server.js           # Server listen entrypoint
 │   ├── tests/                  # Integration test suites (auth, products, cart, orders, admin, user)
-│   ├── .env                    # Environment configuration
+│   ├── .env.example            # Backend env template
 │   └── package.json
 │
+├── .env.example                # Root env template
+├── .gitignore                  # Git exclusions for dependencies, builds, databases & env files
 ├── package.json                # Root convenience scripts (test, test:e2e, build, client, server)
 └── README.md                   # Project documentation & evaluator guide
 ```
@@ -254,7 +268,7 @@ ECO CART/
 
 ## Internship Evaluation Walkthrough
 
-1. **Visit Storefront**: Open `http://localhost:5173`. Notice the Forest Green & Ivory aesthetic, 8-department quick access grid, curated featured items, and sustainability impact counters.
+1. **Visit Storefront**: Open `http://localhost:5173`. Notice the Forest Green & Ivory aesthetic, 4-pillar eco benefits bar, 8-department quick access grid, curated featured items, and sustainability impact counters.
 2. **Explore Catalog & Filters**:
    - Navigate to `/products`.
    - Test category filtering across all 8 departments.
@@ -262,8 +276,10 @@ ECO CART/
    - Filter by minimum EcoScore (e.g., 95+).
    - Test pagination across all 12 pages (140 products).
 3. **Product Intelligence & Alternatives**:
-   - Click on any product (e.g., *HydroPure Insulated Bamboo Flask* or *Heirloom Seed Kit*).
-   - Review the illustrative EcoScore pill and sustainability factor breakdown.
+   - Click on any product (e.g., *HydroPure Insulated Bamboo Flask* or *PureCopper Bottle*).
+   - Review the illustrative EcoScore pill, MRP strikethrough, discount badge, and sustainability factor breakdown.
+   - Test the Pincode Delivery Estimator with a 6-digit Indian PIN (e.g. `560001`).
+   - Switch between the tabs: "EcoScore & Lifecycle Intelligence", "Customer Reviews", and "Zero-Waste Packaging & Delivery".
    - Note the automatic Sustainable Alternative recommendations at the bottom.
 4. **Wishlist**:
    - Click the heart icon on any card or product detail page.
@@ -275,8 +291,94 @@ ECO CART/
    - Proceed to `/checkout`, enter delivery details, select simulated card payment, and click **Place Simulated Order**.
    - Review your order confirmation and track status in your customer profile (`/profile`).
 6. **Admin Dashboard**:
-   - Log out and log in as `admin@ecocart.local` (`EcoAdmin#2026!`).
-   - Navigate to `/admin`.
-   - Inspect platform analytics (simulated revenue in INR, total orders, top eco products, category sales).
+   - Log out and log in as `admin@ecocart.local` (`EcoAdmin#2026!`): [http://localhost:5173/admin](http://localhost:5173/admin).
+   - Inspect platform analytics (simulated revenue in INR, total orders, top eco products, department sales performance).
    - Check the low-stock inventory table.
    - Test updating an order's status or adding a new eco product.
+
+---
+
+## Screenshots & Visual Walkthrough
+
+> *To capture genuine screenshots for your internship submission:*
+
+1. **Homepage Hero & Eco-Benefits**: Take a full-screen screenshot of `http://localhost:5173`.
+2. **Product Catalog with Filters & Pagination**: Take a screenshot of `http://localhost:5173/products` showing the filter sidebar and 140-product pagination.
+3. **Product Detail & EcoScore Breakdown**: Take a screenshot of a product page showing the factor breakdown, star ratings, and greener alternative recommendations.
+4. **Shopping Cart & Eco Impact**: Take a screenshot of `http://localhost:5173/cart` showing the carbon reduction and plastic container avoidance metrics.
+5. **Simulated Checkout & Order Confirmation**: Take a screenshot of the order completion screen with the generated reference code.
+6. **Admin Executive Analytics & Inventory Management**: Take a screenshot of `http://localhost:5173/admin` displaying KPIs, sales breakdown, and low-stock alerts.
+
+Place images in a `docs/screenshots/` folder and link them:
+```markdown
+![EcoCart Homepage](docs/screenshots/01-homepage.png)
+![Product Catalog](docs/screenshots/02-catalog.png)
+![Admin Dashboard](docs/screenshots/03-admin.png)
+```
+
+---
+
+## Deployment Guidance
+
+### Deploying the Backend (e.g., Render / Railway)
+1. Push your repository to GitHub.
+2. In [Render](https://render.com) or [Railway](https://railway.app), create a new **Web Service** connected to your repository.
+3. Set the Root Directory to `server`.
+4. Set Build Command: `npm install`
+5. Set Start Command: `node --no-warnings --experimental-sqlite src/server.js`
+6. Configure Environment Variables:
+   - `NODE_ENV=production`
+   - `PORT=10000`
+   - `JWT_SECRET=<your-strong-random-secret>`
+   - `CLIENT_URL=https://your-frontend-domain.vercel.app`
+
+### Deploying the Frontend (e.g., Vercel / Netlify)
+1. In [Vercel](https://vercel.com) or [Netlify](https://netlify.com), import your repository.
+2. Set Root Directory to `client`.
+3. Set Build Command: `npm run build`
+4. Set Output Directory: `dist`
+5. Configure Environment Variables:
+   - `VITE_API_BASE_URL=https://your-backend-service.onrender.com/api`
+
+---
+
+## Known Limitations & Future Roadmap
+
+- **Illustrative EcoScore Model**: Scores are currently calculated algorithmically based on material and packaging indicators; future iterations could integrate certified Life Cycle Assessment (LCA) APIs.
+- **Simulated Payment Gateway**: The current checkout uses a simulated payment workflow to ensure data privacy; production deployment would integrate Razorpay or Stripe test-mode webhooks.
+- **Automated Carbon Tax Calculator**: A future module can compute localized carbon offset credits based on freight distance.
+
+---
+
+## Steps to Create a GitHub Repository & Upload
+
+When you are ready to upload this project to your GitHub account:
+
+1. **Create an empty repository on GitHub**:
+   - Go to [GitHub](https://github.com/new).
+   - Set Repository name to `CodeAlpha_EcoCart`.
+   - Choose **Public**.
+   - Do **NOT** initialize with a README, .gitignore, or license (we already have them configured).
+   - Click **Create repository**.
+
+2. **Open PowerShell in the project directory**:
+   ```powershell
+   cd "c:\Users\MADHURI\Desktop\ECO CART"
+   ```
+
+3. **Verify Git status**:
+   ```powershell
+   git status
+   ```
+
+4. **Link your GitHub remote and push**:
+   ```powershell
+   # Add your GitHub remote URL
+   git remote add origin https://github.com/<YOUR_GITHUB_USERNAME>/CodeAlpha_EcoCart.git
+
+   # Rename branch to main if not already
+   git branch -M main
+
+   # Push your code to GitHub
+   git push -u origin main
+   ```

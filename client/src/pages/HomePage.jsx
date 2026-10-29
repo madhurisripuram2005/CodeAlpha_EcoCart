@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Leaf, ArrowRight, ShieldCheck, RefreshCw, Sparkles, Droplets,
-  ShoppingBag, Award, Heart, Package, Sun, Compass, CheckCircle2, ChevronRight
+  ShoppingBag, Award, Heart, Package, Sun, Compass, CheckCircle2, ChevronRight,
+  Truck, Recycle, Globe, Star, Mail, Check, TrendingUp
 } from 'lucide-react';
 import { productAPI } from '../services/api';
 import ProductCard from '../components/ProductCard';
@@ -10,32 +11,33 @@ import ImpactSummaryCard from '../components/ImpactSummaryCard';
 
 export default function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [bestsellers, setBestsellers] = useState([]);
+  const [topEcoProducts, setTopEcoProducts] = useState([]);
+  const [newArrivals, setNewArrivals] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [activeTab, setActiveTab] = useState('featured');
+  const [activeTab, setActiveTab] = useState('featured'); // 'featured' | 'top-eco' | 'newest'
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Newsletter state
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
 
   useEffect(() => {
     async function loadHomeData() {
       try {
         setLoading(true);
         setError(null);
-        const [featRes, bestRes, catRes] = await Promise.all([
+        const [featRes, ecoRes, newRes, catRes] = await Promise.all([
           productAPI.getProducts({ limit: 8, sort: 'featured' }),
           productAPI.getProducts({ limit: 8, sort: 'eco_desc' }),
+          productAPI.getProducts({ limit: 8, sort: 'newest' }),
           productAPI.getCategories()
         ]);
 
-        if (featRes.success) {
-          setFeaturedProducts(featRes.products || []);
-        }
-        if (bestRes.success) {
-          setBestsellers(bestRes.products || []);
-        }
-        if (catRes.success) {
-          setCategories(catRes.categories || []);
-        }
+        if (featRes.success) setFeaturedProducts(featRes.products || []);
+        if (ecoRes.success) setTopEcoProducts(ecoRes.products || []);
+        if (newRes.success) setNewArrivals(newRes.products || []);
+        if (catRes.success) setCategories(catRes.categories || []);
       } catch (err) {
         setError(err.message || 'Failed to load store catalog');
       } finally {
@@ -59,11 +61,51 @@ export default function HomePage() {
   const communityImpact = {
     estimatedPlasticContainersAvoided: 18450,
     estimatedSingleUseBagsSaved: 14200,
-    averageEcoScore: 95,
+    averageEcoScore: 95.2,
     disclaimer: 'Illustrative community benchmark calculated from combined purchases of reusable canteens and organic fiber totes.'
   };
 
-  const displayedProducts = activeTab === 'featured' ? featuredProducts : bestsellers;
+  const displayedProducts = activeTab === 'featured'
+    ? featuredProducts
+    : activeTab === 'top-eco'
+      ? topEcoProducts
+      : newArrivals;
+
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+    if (newsletterEmail && newsletterEmail.includes('@')) {
+      setNewsletterSubscribed(true);
+      setNewsletterEmail('');
+      setTimeout(() => setNewsletterSubscribed(false), 5000);
+    }
+  };
+
+  const testimonials = [
+    {
+      name: 'Ananya Deshmukh',
+      role: 'Environmental Consultant',
+      city: 'Mumbai',
+      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+      rating: 5,
+      quote: 'EcoCart transforms how I shop. The transparent EcoScore breakdown helps me evaluate actual lifecycle impacts rather than falling for greenwashed buzzwords.'
+    },
+    {
+      name: 'Vikram Sengupta',
+      role: 'Zero-Waste Advocate',
+      city: 'Kolkata',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+      rating: 5,
+      quote: 'The copper canteens and plantable seed pencils arrived in 100% plastic-free packaging. Even the packaging tape was water-activated paper. Genuinely impressive.'
+    },
+    {
+      name: 'Dr. Meera Nambiar',
+      role: 'Professor of Botany',
+      city: 'Bengaluru',
+      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80',
+      rating: 5,
+      quote: 'The sustainable alternative recommendations are a standout feature. Seeing a greener option with higher recycled content before checking out changed my habits permanently.'
+    }
+  ];
 
   return (
     <div className="home-page">
@@ -131,7 +173,52 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. Departments / 8 Category Tiles */}
+      {/* 2. Four Core Eco Benefits Bar */}
+      <section className="eco-benefits-bar">
+        <div className="container benefits-grid">
+          <div className="benefit-card">
+            <div className="benefit-icon-box">
+              <Package size={22} className="text-forest" />
+            </div>
+            <div>
+              <h4 className="benefit-title">100% Plastic-Free</h4>
+              <p className="benefit-desc">Compostable unbleached kraft cartons and paper tape.</p>
+            </div>
+          </div>
+
+          <div className="benefit-card">
+            <div className="benefit-icon-box">
+              <Truck size={22} className="text-forest" />
+            </div>
+            <div>
+              <h4 className="benefit-title">Carbon-Neutral Logistics</h4>
+              <p className="benefit-desc">Calculated shipping offsets invested in agroforestry.</p>
+            </div>
+          </div>
+
+          <div className="benefit-card">
+            <div className="benefit-icon-box">
+              <Recycle size={22} className="text-forest" />
+            </div>
+            <div>
+              <h4 className="benefit-title">Circular Lifecycle</h4>
+              <p className="benefit-desc">Priority for organic, heirloom, and recyclable goods.</p>
+            </div>
+          </div>
+
+          <div className="benefit-card">
+            <div className="benefit-icon-box">
+              <Globe size={22} className="text-forest" />
+            </div>
+            <div>
+              <h4 className="benefit-title">Direct Artisan Sourcing</h4>
+              <p className="benefit-desc">Supporting fair-trade rural weavers and potters.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Departments / 8 Category Tiles */}
       <section className="departments-section">
         <div className="container">
           <div className="section-header text-center">
@@ -167,7 +254,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. Featured Showcase Tabs (Featured / Highest EcoScore) */}
+      {/* 4. Featured Showcase Tabs (Featured / Highest EcoScore / New Arrivals) */}
       <section className="featured-section">
         <div className="container">
           <div className="showcase-header">
@@ -190,6 +277,13 @@ export default function HomePage() {
                 onClick={() => setActiveTab('top-eco')}
               >
                 Highest EcoScore (95+)
+              </button>
+              <button
+                type="button"
+                className={`tab-btn ${activeTab === 'newest' ? 'active' : ''}`}
+                onClick={() => setActiveTab('newest')}
+              >
+                New Arrivals
               </button>
             </div>
           </div>
@@ -217,7 +311,43 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. Sustainability Education Section */}
+      {/* 5. Business Value & Sustainable Consumption Section */}
+      <section className="business-value-section">
+        <div className="container">
+          <div className="business-value-card card">
+            <div className="business-value-header flex-align-center gap-2">
+              <TrendingUp className="text-forest" size={24} />
+              <span className="section-eyebrow">Business Value & Purpose</span>
+            </div>
+            <h2 className="business-value-title">How EcoCart Promotes Sustainable Consumption</h2>
+            <p className="business-value-lead">
+              EcoCart is engineered not merely as an online store, but as a behavioral catalyst for conscious purchasing habits.
+            </p>
+
+            <div className="business-value-grid">
+              <div className="value-pillar">
+                <div className="value-pillar-number">01</div>
+                <h4>Lifecycle Transparency Over Greenwashing</h4>
+                <p>Every product is scored from 0–100 across material circularity, carbon footprint, and end-of-life biodegradability, giving shoppers objective comparison criteria.</p>
+              </div>
+
+              <div className="value-pillar">
+                <div className="value-pillar-number">02</div>
+                <h4>Algorithmic Alternative Suggestions</h4>
+                <p>When consumers explore standard essentials, our recommendation engine surfaces greener alternatives with equal or superior EcoScores right on the product page.</p>
+              </div>
+
+              <div className="value-pillar">
+                <div className="value-pillar-number">03</div>
+                <h4>Quantified Personal Environmental Impact</h4>
+                <p>Shoppers track their cumulative single-use plastic bottles avoided and plastic bags eliminated in their customer profile, reinforcing sustainable lifestyle retention.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Sustainability Education Section */}
       <section id="how-it-works" className="education-section">
         <div className="container">
           <div className="education-grid">
@@ -277,7 +407,80 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. Brand Mission & Values */}
+      {/* 7. Customer Reviews / Testimonials Section */}
+      <section className="testimonials-section">
+        <div className="container">
+          <div className="section-header text-center">
+            <span className="section-eyebrow">Voices of the Movement</span>
+            <h2 className="section-title">Trusted by Conscious Shoppers</h2>
+            <p className="section-description">
+              Read how everyday households and sustainability leaders make a difference with EcoCart.
+            </p>
+          </div>
+
+          <div className="testimonials-grid">
+            {testimonials.map((t, idx) => (
+              <div key={idx} className="testimonial-card card">
+                <div className="stars-group" style={{ marginBottom: '0.75rem' }}>
+                  {[...Array(t.rating)].map((_, i) => (
+                    <Star key={i} size={16} fill="#eab308" color="#eab308" />
+                  ))}
+                </div>
+                <p className="testimonial-quote">"{t.quote}"</p>
+                <div className="testimonial-author-row flex-align-center gap-3">
+                  <img src={t.image} alt={t.name} className="testimonial-avatar" />
+                  <div>
+                    <h4 className="testimonial-name">{t.name}</h4>
+                    <span className="testimonial-meta">{t.role} • {t.city}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 8. Interactive Newsletter Signup Section */}
+      <section className="newsletter-banner-section">
+        <div className="container">
+          <div className="newsletter-card card">
+            <div className="newsletter-content">
+              <span className="section-eyebrow" style={{ color: 'var(--color-ivory-300)' }}>Stay Conscious</span>
+              <h2>Get the Free Zero-Waste Living Handbook</h2>
+              <p>
+                Subscribe to our monthly digest. Receive practical zero-waste habit guides, seasonal organic tips, and exclusive access to new artisan arrivals.
+              </p>
+
+              {newsletterSubscribed ? (
+                <div className="newsletter-confirm-box">
+                  <CheckCircle2 size={24} className="text-success" />
+                  <div>
+                    <strong>Welcome to the EcoCart Community!</strong>
+                    <p>Check your inbox for your complimentary Zero-Waste Living Handbook.</p>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleNewsletterSubmit} className="home-newsletter-form">
+                  <input
+                    type="email"
+                    placeholder="Enter your email address"
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                    required
+                    className="newsletter-home-input"
+                  />
+                  <button type="submit" className="btn btn-primary btn-lg">
+                    <span>Subscribe Free</span>
+                    <ArrowRight size={18} />
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 9. Brand Mission & Values */}
       <section className="mission-section">
         <div className="container">
           <div className="mission-card">
@@ -296,7 +499,7 @@ export default function HomePage() {
                   <span className="stat-label">Conscious Departments</span>
                 </div>
                 <div className="stat-box">
-                  <span className="stat-number">95.4</span>
+                  <span className="stat-number">95.2</span>
                   <span className="stat-label">Average EcoScore</span>
                 </div>
                 <div className="stat-box">

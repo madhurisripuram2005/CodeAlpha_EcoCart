@@ -234,6 +234,17 @@ export default function AdminDashboardPage() {
         {/* TAB 1: Executive Analytics */}
         {activeTab === 'analytics' && (
           <div className="admin-tab-content">
+            {/* Demo Notice Banner */}
+            <div className="alert alert-info" style={{ marginBottom: '1.5rem', borderLeft: '4px solid var(--color-forest-700)' }}>
+              <Shield size={18} className="text-forest" />
+              <div>
+                <strong>Internship Prototype Demonstration Notice:</strong>
+                <span style={{ display: 'block', fontSize: '0.8125rem', marginTop: '0.2rem' }}>
+                  All orders, transactions, and revenue figures shown below are simulated for demonstration purposes within this CodeAlpha Full Stack Development portfolio. No real banking or card processing is involved.
+                </span>
+              </div>
+            </div>
+
             {/* KPI Cards Row */}
             <div className="kpi-grid">
               <div className="kpi-card card">
@@ -338,6 +349,71 @@ export default function AdminDashboardPage() {
                     ))}
                   </div>
                 )}
+              </div>
+            </div>
+
+            {/* Category Performance & Sales Breakdown */}
+            {analytics?.categorySales && analytics.categorySales.length > 0 && (
+              <div className="card" style={{ marginTop: '1.75rem' }}>
+                <div className="flex-between" style={{ marginBottom: '1rem' }}>
+                  <h3>Department & Category Sales Performance</h3>
+                  <span className="badge badge-forest">{analytics.categorySales.length} Departments Active</span>
+                </div>
+                <div className="admin-table-responsive">
+                  <table className="admin-table">
+                    <thead>
+                      <tr>
+                        <th>Department</th>
+                        <th>Orders Generated</th>
+                        <th>Units Sold</th>
+                        <th style={{ textAlign: 'right' }}>Simulated Revenue</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {analytics.categorySales.map((cs, idx) => (
+                        <tr key={idx}>
+                          <td><strong>{cs.category}</strong></td>
+                          <td>{cs.order_count}</td>
+                          <td>{cs.items_sold} items</td>
+                          <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--color-forest-800)' }}>
+                            {formatINR(cs.total_revenue)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* Business Value & Sustainability Mission Analysis */}
+            <div className="card" style={{ marginTop: '1.75rem', backgroundColor: '#FAF7F2', border: '1px solid var(--color-border)' }}>
+              <div className="flex-align-center gap-2" style={{ marginBottom: '0.75rem' }}>
+                <Shield className="text-forest" size={20} />
+                <h3 style={{ margin: 0 }}>Business Value: How EcoCart Promotes Sustainable Consumption</h3>
+              </div>
+              <p style={{ color: 'var(--color-charcoal-700)', fontSize: '0.9375rem', lineHeight: 1.6, marginBottom: '1rem' }}>
+                Conventional e-commerce incentivizes impulse consumption with high plastic packaging waste. EcoCart alters customer purchasing dynamics through four core mechanisms:
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
+                <div style={{ padding: '1rem', backgroundColor: '#ffffff', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
+                  <strong style={{ color: 'var(--color-forest-900)' }}>1. Objective Lifecycle Ratings</strong>
+                  <p style={{ margin: '0.35rem 0 0', fontSize: '0.8125rem', color: 'var(--color-charcoal-600)', lineHeight: 1.5 }}>
+                    Illustrative EcoScores (0–100) benchmark materials, recyclability, and plastic reduction, eliminating greenwashing confusion.
+                  </p>
+                </div>
+                <div style={{ padding: '1rem', backgroundColor: '#ffffff', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
+                  <strong style={{ color: 'var(--color-forest-900)' }}>2. Pre-Checkout Alternatives</strong>
+                  <p style={{ margin: '0.35rem 0 0', fontSize: '0.8125rem', color: 'var(--color-charcoal-600)', lineHeight: 1.5 }}>
+                    Recommendation algorithms proactively suggest greener substitutes in the same category before the order is finalized.
+                  </p>
+                </div>
+                <div style={{ padding: '1rem', backgroundColor: '#ffffff', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
+                  <strong style={{ color: 'var(--color-forest-900)' }}>3. Quantified Impact Dashboard</strong>
+                  <p style={{ margin: '0.35rem 0 0', fontSize: '0.8125rem', color: 'var(--color-charcoal-600)', lineHeight: 1.5 }}>
+                    Customers monitor their cumulative single-use plastic bottles avoided and bags saved in their profile, fostering repeat conscious choices.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
