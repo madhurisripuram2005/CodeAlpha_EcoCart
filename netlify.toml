@@ -1,0 +1,15 @@
+# Netlify configuration for EcoCart Full-Stack Web App
+
+[build]
+  base = "client"
+  publish = "dist"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Single Page Application (React Router) redirect rule
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
