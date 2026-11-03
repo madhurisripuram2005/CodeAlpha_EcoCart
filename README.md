@@ -1,7 +1,9 @@
 # EcoCart — Smart Sustainable Shopping Platform
 
 > Complete full-stack web application built for the **CodeAlpha Full Stack Development Internship**.
-> Repository Name: `CodeAlpha_EcoCart`
+>
+> 🌐 **Live Deployed Demo:** [https://codealphaecocart.netlify.app](https://codealphaecocart.netlify.app)  
+> 📁 **GitHub Repository:** [https://github.com/madhurisripuram2005/CodeAlpha_EcoCart](https://github.com/madhurisripuram2005/CodeAlpha_EcoCart)
 
 EcoCart is an e-commerce platform designed to help consumers discover, evaluate, and purchase eco-friendly products. It pairs rich product information with transparent sustainability intelligence (**EcoScore** from 0–100), automated sustainable alternative recommendations, personal environmental impact tracking, full wishlist management, and an executive administration portal.
 
