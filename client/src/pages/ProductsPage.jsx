@@ -40,6 +40,18 @@ export default function ProductsPage() {
     'Travel & Lifestyle'
   ];
 
+  // Prevent background scroll when mobile filter drawer is open
+  useEffect(() => {
+    if (mobileFilterOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileFilterOpen]);
+
   // Fetch categories on mount
   useEffect(() => {
     async function loadCategories() {
@@ -158,6 +170,13 @@ export default function ProductsPage() {
 
         {/* Catalog Main Layout (Sidebar + Grid) */}
         <div className="catalog-layout">
+          {mobileFilterOpen && (
+            <div
+              className="sidebar-backdrop animate-fade-in"
+              onClick={() => setMobileFilterOpen(false)}
+              aria-label="Close filter drawer"
+            />
+          )}
           {/* Filter Sidebar */}
           <aside className={`catalog-sidebar ${mobileFilterOpen ? 'mobile-open' : ''}`}>
             <div className="sidebar-header">
